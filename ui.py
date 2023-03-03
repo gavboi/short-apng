@@ -1,3 +1,11 @@
+"""This module creates a window that allows users to select parameters more
+easily. NOT YET FUNCTIONAL
+
+Contains:
+
+    * :func:`main`
+"""
+
 print("Not working yet!")
 input("(Press enter)")
 exit()
