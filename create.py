@@ -11,6 +11,9 @@ Contains:
 from apng import APNG
 from os.path import isfile
 
+VALID_IMAGES = ('.png')
+"""File extensions of valid images to use."""
+
 
 def verify_image(img):
     """Checks if a path leads to an image suitable for the APNG.
@@ -22,7 +25,9 @@ def verify_image(img):
     """
     
     if img:
-        return isfile(img)
+        if isfile(img):
+            if len(img) > 4:
+                return img[-4:] in VALID_IMAGES
     return False
 
 
@@ -52,9 +57,14 @@ def make_apng(frame1=None, frame2=None, filename=None):
     im = APNG(num_plays=1)
     im.append_file(frame1, delay=1)
     im.append_file(frame2, delay=1)
-    im.save(filename + '.png')
-    print("File created")
-    return True
+    name = filename + '.png'
+    im.save(name)
+    if isfile(name):
+        print("File created")
+        return True
+    else:
+        print("Something went wrong")
+        return False
 
 
 # if running this file directly, call make_apng
