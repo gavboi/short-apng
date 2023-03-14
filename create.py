@@ -10,24 +10,32 @@ Contains:
 
 from apng import APNG
 from os.path import isfile
+from PIL import Image
 
-VALID_IMAGES = ('.png')
+VALID_IMAGES = ('.png','.jpg')
 """File extensions of valid images to use."""
 
 
-def verify_image(img):
+def verify_image(img, size=None):
     """Checks if a path leads to an image suitable for the APNG.
 
     :param img: path to check
     :type img: str
+    :param size: size to enforce
+    :type size: (int, int)
     :return: `True` if path leads to suitable image, else `False`
     :rtype: bool
     """
     
     if img:
-        if isfile(img):
-            if len(img) > 4:
-                return img[-4:] in VALID_IMAGES
+        if (isfile(img) and
+            len(img) > 4 and
+            img[-4:] in VALID_IMAGES):
+                if size:
+                    with Image.open(img) as im:
+                        return size == im.size
+                else:
+                    return True
     return False
 
 
