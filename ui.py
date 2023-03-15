@@ -1,9 +1,8 @@
 """This module creates a window that allows users to select parameters more
-easily. NOT YET FUNCTIONAL
+easily.
 
 Contains:
 
-    * :func:`main`
     * :func:`display_status`
 """
 
