@@ -9,7 +9,8 @@ Contains:
 """
 
 from apng import APNG
-from os.path import isfile
+from os.path import isfile, basename, splitext
+from os import remove
 from PIL import Image
 
 VALID_IMAGES = ('.png','.jpg')
@@ -60,13 +61,25 @@ def make_apng(frame1=None, frame2=None, filename=None):
         frame2 = input('Input path to hidden image/frame 2: ')
     while not filename:
         filename = input('Input name of output file (no extension): ')
-
+    # make formatting consistent
+    with Image.open(frame1) as img:
+        temp = splitext(frame1)
+        frame1 = 'temp_' + basename(temp[0]) + '.png'
+        img = img.convert("RGBA", colors=32)
+        img.save(frame1)
+    with Image.open(frame2) as img:
+        temp = splitext(frame2)
+        frame2 = 'temp_' + basename(temp[0]) + '.png'
+        img = img.convert("RGBA", colors=32)
+        img.save(frame2)
     # make png
     im = APNG(num_plays=1)
     im.append_file(frame1, delay=1)
     im.append_file(frame2, delay=1)
     name = filename + '.png'
     im.save(name)
+    remove(frame1)
+    remove(frame2)
     if isfile(name):
         print("File created")
         return True
